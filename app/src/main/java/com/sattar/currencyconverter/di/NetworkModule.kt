@@ -30,11 +30,10 @@ class NetworkModule {
     }
 
     @Provides
-    fun getOkHttpCleint(): OkHttpClient {
+    fun getOkHttpClient(): OkHttpClient {
         return OkHttpClient.Builder()
             .build()
     }
-
 
     @Provides
     fun getCurrencyApiService(retrofit: Retrofit): CurrencyApiService {
