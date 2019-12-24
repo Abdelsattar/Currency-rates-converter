@@ -1,5 +1,6 @@
 package com.sattar.currencyconverter.di
 
+import com.sattar.currencyconverter.data.api.CurrencyApiService
 import com.sattar.currencyconverter.ui.currencylist.CurrencyListRepository
 import dagger.Module
 import dagger.Provides
@@ -13,8 +14,8 @@ import dagger.Provides
 class RepositoryModule {
 
     @Provides
-    fun provideCurrencyListRepository(): CurrencyListRepository {
-        return CurrencyListRepository()
+    fun provideCurrencyListRepository(currencyApiService: CurrencyApiService): CurrencyListRepository {
+        return CurrencyListRepository(currencyApiService)
     }
 
 }

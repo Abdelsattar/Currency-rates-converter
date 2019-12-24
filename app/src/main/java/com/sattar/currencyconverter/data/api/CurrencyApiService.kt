@@ -1,5 +1,6 @@
 package com.sattar.currencyconverter.data.api
 
+import com.sattar.currencyconverter.data.model.CurrencyRatesResponse
 import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -18,6 +19,6 @@ interface CurrencyApiService {
     }
 
     @GET(PATH_LATEST)
-    fun getLatestCurrencyRates(@Query(QUERY_BASE) baseCurrency: String): Single<String>
+    fun getLatestCurrencyRates(@Query(QUERY_BASE) baseCurrency: String): Single<CurrencyRatesResponse>
 
 }
