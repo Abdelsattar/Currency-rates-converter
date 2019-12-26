@@ -1,0 +1,60 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp">
+
+    <ImageView
+        android:id="@+id/imgCurrencyFLag"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription"
+        tools:src="@drawable/abc_vector_test" />
+
+    <TextView
+        android:id="@+id/txtCurrencyCode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:textColor="@color/color_black"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@id/txtCurrencyCountry"
+        app:layout_constraintStart_toEndOf="@id/imgCurrencyFLag"
+        app:layout_constraintTop_toTopOf="@id/imgCurrencyFLag"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:text="EUR" />
+
+    <TextView
+        android:id="@+id/txtCurrencyCountry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:textColor="@color/color_gray"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@id/imgCurrencyFLag"
+        app:layout_constraintStart_toEndOf="@id/imgCurrencyFLag"
+        app:layout_constraintTop_toBottomOf="@id/txtCurrencyCode"
+        tools:text="Euro" />
+
+    <EditText
+        android:id="@+id/etCurrencyRate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="325.25"
+        android:imeOptions="actionDone"
+        android:importantForAutofill="no"
+        android:inputType="numberDecimal"
+        android:maxLength="15"
+        android:maxLines="1"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="LabelFor"
+        tools:text="1.00" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
