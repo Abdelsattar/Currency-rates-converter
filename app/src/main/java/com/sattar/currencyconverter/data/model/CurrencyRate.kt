@@ -1,4 +1,7 @@
 package com.sattar.currencyconverter.data.model
 
 data class CurrencyRate(
-   val currencyCode: String, val CurrencyRate: Double)
+    var currencyCode: String, var currencyRate: Double,
+    var currencyName: String? = null,
+    var currencyFlagUrl: String? = null
+)

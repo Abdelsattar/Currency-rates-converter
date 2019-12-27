@@ -1,6 +1,7 @@
 package com.sattar.currencyconverter.ui.currencylist
 
 import android.os.Bundle
+import android.provider.Telephony
 import android.util.Log
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -19,6 +20,9 @@ class CurrencyListActivity : BaseActivity() {
     @Inject
     lateinit var currencyListViewModel: CurrencyListViewModel
 
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -36,7 +40,7 @@ class CurrencyListActivity : BaseActivity() {
             Observer { serverResponse ->
                 if (serverResponse.status == 200) {
                     Log.e("UI response ", serverResponse?.response.toString())
-                    setupCurrencyRatesRecyclerView(serverResponse?.response?.rates!!)
+                    setupCurrencyRatesRecyclerView(serverResponse?.response)
                 } else {
                     Log.e("UI response ", serverResponse?.error)
 
@@ -47,20 +51,10 @@ class CurrencyListActivity : BaseActivity() {
 
     private lateinit var adapter: CurrencyRatesAdapter
 
-    fun setupCurrencyRatesRecyclerView(rates: Map<String, Double>) {
-        adapter = CurrencyRatesAdapter(getCurrencyListFromMap(rates))
+    fun setupCurrencyRatesRecyclerView(rates: MutableList<CurrencyRate>?) {
+        adapter = CurrencyRatesAdapter(rates!!)
         rvCurrencyRates.adapter = adapter
         rvCurrencyRates.layoutManager = LinearLayoutManager(this)
     }
 
-    fun getCurrencyListFromMap(rates: Map<String, Double>): ArrayList<CurrencyRate> {
-        var ratesList = ArrayList<CurrencyRate>()
-
-        var i = 0
-        rates.forEach({ (currencyCode, currencyRate) ->
-            ratesList.add(CurrencyRate(currencyCode, currencyRate))
-            i++
-        })
-        return ratesList
-    }
 }

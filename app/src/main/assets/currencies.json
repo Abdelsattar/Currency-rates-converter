@@ -1,0 +1,167 @@
+[
+  {
+    "currencyCode": "EUR",
+    "currencyFlagUrl": "https://myflag.com.au/wp-content/uploads/european-union-flag.jpg",
+    "currencyName": "Euro"
+  },
+  {
+    "currencyCode": "AUD",
+    "currencyFlagUrl": "https://cdn.rawgit.com/hjnilsson/country-flags/master/png250px/au.png",
+    "currencyName": "Australian Dollar"
+  },
+  {
+    "currencyCode": "BGN",
+    "currencyFlagUrl": "https://cdn.rawgit.com/hjnilsson/country-flags/master/png250px/bg.png",
+    "currencyName": "Bulgarian Lev"
+  },
+  {
+    "currencyCode": "BRL",
+    "currencyFlagUrl": "https://cdn.rawgit.com/hjnilsson/country-flags/master/png250px/br.png",
+    "currencyName": "Brazilian Real"
+  },
+  {
+    "currencyCode": "CAD",
+    "currencyFlagUrl": "https://cdn.rawgit.com/hjnilsson/country-flags/master/png250px/ca.png",
+    "currencyName": "Canadian Dollar"
+  },
+  {
+    "currencyCode": "CHF",
+    "currencyFlagUrl": "https://cdn.rawgit.com/hjnilsson/country-flags/master/png250px/ch.png",
+    "currencyName": "Swiss Franc"
+  },
+  {
+    "currencyCode": "CNY",
+    "currencyFlagUrl": "https://cdn.rawgit.com/hjnilsson/country-flags/master/png250px/cn.png",
+    "currencyName": "Chinese Yuan"
+  },
+  {
+    "currencyCode": "CZK",
+    "currencyFlagUrl": "https://cdn.rawgit.com/hjnilsson/country-flags/master/png250px/cz.png",
+    "currencyName": "Czech Korouna"
+  },
+  {
+    "currencyCode": "DKK",
+    "currencyFlagUrl": "https://cdn.rawgit.com/hjnilsson/country-flags/master/png250px/dk.png",
+    "currencyName": "Danish Krone"
+  },
+  {
+    "currencyCode": "GBP",
+    "currencyFlagUrl": "https://cdn.rawgit.com/hjnilsson/country-flags/master/png250px/gb.png",
+    "currencyName": "Pound Sterling"
+  },
+  {
+    "currencyCode": "HKD",
+    "currencyFlagUrl": "https://cdn.rawgit.com/hjnilsson/country-flags/master/png250px/hk.png",
+    "currencyName": "Hong Kong Dollar"
+  },
+  {
+    "currencyCode": "HRK",
+    "currencyFlagUrl": "https://cdn.rawgit.com/hjnilsson/country-flags/master/png250px/hr.png",
+    "currencyName": "Croatian Kuna"
+  },
+  {
+    "currencyCode": "HUF",
+    "currencyFlagUrl": "https://cdn.rawgit.com/hjnilsson/country-flags/master/png250px/hu.png",
+    "currencyName": "Hungarian Forint"
+  },
+  {
+    "currencyCode": "IDR",
+    "currencyFlagUrl": "https://cdn.rawgit.com/hjnilsson/country-flags/master/png250px/id.png",
+    "currencyName": "Inodnesian Rupiah"
+  },
+  {
+    "currencyCode": "ILS",
+    "currencyFlagUrl": "https://cdn.rawgit.com/hjnilsson/country-flags/master/png250px/il.png",
+    "currencyName": "Iseali New Shekel"
+  },
+  {
+    "currencyCode": "INR",
+    "currencyFlagUrl": "https://cdn.rawgit.com/hjnilsson/country-flags/master/png250px/in.png",
+    "currencyName": "Indian Rupee"
+  },
+  {
+    "currencyCode": "ISK",
+    "currencyFlagUrl": "https://cdn.rawgit.com/hjnilsson/country-flags/master/png250px/is.png",
+    "currencyName": "Icelandic Króna"
+  },
+  {
+    "currencyCode": "JPY",
+    "currencyFlagUrl": "https://cdn.rawgit.com/hjnilsson/country-flags/master/png250px/jp.png",
+    "currencyName": "Japanese Yen"
+  },
+  {
+    "currencyCode": "KRW",
+    "currencyFlagUrl": "https://cdn.rawgit.com/hjnilsson/country-flags/master/png250px/kr.png",
+    "currencyName": "South Korean Won"
+  },
+  {
+    "currencyCode": "MXN",
+    "currencyFlagUrl": "https://cdn.rawgit.com/hjnilsson/country-flags/master/png250px/mx.png",
+    "currencyName": "Mexican Peso"
+  },
+  {
+    "currencyCode": "MYR",
+    "currencyFlagUrl": "https://cdn.rawgit.com/hjnilsson/country-flags/master/png250px/my.png",
+    "currencyName": "Malaysian Ringgit"
+  },
+  {
+    "currencyCode": "NOK",
+    "currencyFlagUrl": "https://cdn.rawgit.com/hjnilsson/country-flags/master/png250px/no.png",
+    "currencyName": "Norwegian Krone"
+  },
+  {
+    "currencyCode": "NZD",
+    "currencyFlagUrl": "https://cdn.rawgit.com/hjnilsson/country-flags/master/png250px/nz.png",
+    "currencyName": "New Zealand Dollar"
+  },
+  {
+    "currencyCode": "PHP",
+    "currencyFlagUrl": "https://cdn.rawgit.com/hjnilsson/country-flags/master/png250px/ph.png",
+    "currencyName": "Philippine Peso"
+  },
+  {
+    "currencyCode": "PLN",
+    "currencyFlagUrl": "https://cdn.rawgit.com/hjnilsson/country-flags/master/png250px/pl.png",
+    "currencyName": "Poland Złoty"
+  },
+  {
+    "currencyCode": "RON",
+    "currencyFlagUrl": "https://cdn.rawgit.com/hjnilsson/country-flags/master/png250px/ro.png",
+    "currencyName": "Romanian Leu"
+  },
+  {
+    "currencyCode": "RUB",
+    "currencyFlagUrl": "https://cdn.rawgit.com/hjnilsson/country-flags/master/png250px/ru.png",
+    "currencyName": "Russian Ruble"
+  },
+  {
+    "currencyCode": "SEK",
+    "currencyFlagUrl": "https://cdn.rawgit.com/hjnilsson/country-flags/master/png250px/se.png",
+    "currencyName": "Swedish Krona"
+  },
+  {
+    "currencyCode": "SGD",
+    "currencyFlagUrl": "https://cdn.rawgit.com/hjnilsson/country-flags/master/png250px/sg.png",
+    "currencyName": "Singapore Dollar"
+  },
+  {
+    "currencyCode": "THB",
+    "currencyFlagUrl": "https://cdn.rawgit.com/hjnilsson/country-flags/master/png250px/th.png",
+    "currencyName": "Thai Baht"
+  },
+  {
+    "currencyCode": "TRY",
+    "currencyFlagUrl": "https://cdn.rawgit.com/hjnilsson/country-flags/master/png250px/tr.png",
+    "currencyName": "Turkish Lira"
+  },
+  {
+    "currencyCode": "USD",
+    "currencyFlagUrl": "https://cdn.rawgit.com/hjnilsson/country-flags/master/png250px/us.png",
+    "currencyName": "US Dollar"
+  },
+  {
+    "currencyCode": "ZAR",
+    "currencyFlagUrl": "https://cdn.rawgit.com/hjnilsson/country-flags/master/png250px/za.png",
+    "currencyName": "South African Rand"
+  }
+]
