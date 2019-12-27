@@ -1,6 +1,8 @@
 package com.sattar.currencyconverter.ui.base
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import io.reactivex.disposables.CompositeDisposable
 
 /**
  * Project: Currency Converter
@@ -8,4 +10,14 @@ import androidx.lifecycle.ViewModel
  * @author : Mohamed Abd EL-Sattar
  */
 abstract class BaseViewModel : ViewModel() {
+
+    val error = MutableLiveData<String>()
+    val disposable = CompositeDisposable()
+
+    override fun onCleared() {
+        super.onCleared()
+
+        disposable.dispose()
+        disposable.clear()
+    }
 }

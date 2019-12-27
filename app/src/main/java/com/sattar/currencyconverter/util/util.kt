@@ -8,6 +8,7 @@ import androidx.annotation.LayoutRes
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.io.InputStream
+import java.text.DecimalFormat
 
 /**
  * Project: Currency Converter
@@ -29,4 +30,9 @@ inline fun <reified T> Gson.fromAssets(context: Context, fileName: String): T {
 
 fun ViewGroup.inflate(@LayoutRes layoutRes: Int, attachToRoot: Boolean = false): View {
     return LayoutInflater.from(context).inflate(layoutRes, this, attachToRoot)
+}
+
+fun Double.format(): String {
+    val dec = DecimalFormat("#.#####")
+    return dec.format(this)
 }

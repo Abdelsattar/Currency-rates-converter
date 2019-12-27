@@ -7,6 +7,8 @@ import com.sattar.currencyconverter.data.model.ServerResponse
 import com.sattar.currencyconverter.ui.base.BaseViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import java.text.DecimalFormat
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 /**
@@ -19,29 +21,35 @@ class CurrencyListViewModel @Inject constructor(
     private val localCurrencies: ArrayList<CurrencyRate>
 ) : BaseViewModel() {
 
+    var baseCurrencyCode = "EUR"
+    var baseCurrencyRateFactor = 1.0
 
-    fun getLatestCurrencyRates(baseCurrency: String): MutableLiveData<ServerResponse<MutableList<CurrencyRate>>> {
+    fun getLatestCurrencyRates(): MutableLiveData<ServerResponse<MutableList<CurrencyRate>>> {
         val currencyRatesLiveData = MutableLiveData<ServerResponse<MutableList<CurrencyRate>>>()
 
-        currencyListRepository.getLatestCurrencyRates(baseCurrency)
-//            .delay(5, TimeUnit.SECONDS)
-//            .repeat()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ response ->
-                currencyRatesLiveData.value =
-                    ServerResponse(getCurrencyListFromMap(response.rates), 200)
-                Log.e("Currency", response.toString())
+        disposable.clear()
+        disposable.add(
+            currencyListRepository.getLatestCurrencyRates(baseCurrencyCode)
+//                .delay(1, TimeUnit.SECONDS)
+//                .repeat()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .repeatWhen { completed -> completed.delay(1, TimeUnit.SECONDS) }
 
-            }, { t: Throwable? ->
-                currencyRatesLiveData.value = ServerResponse(t?.localizedMessage!!, 500)
+                .subscribe({ response ->
+                    currencyRatesLiveData.value =
+                        ServerResponse(getCurrencyListFromMap(response.rates), 200)
+                    Log.e("Currency", response.toString())
 
-                Log.e("Currency", t?.localizedMessage)
+                }, { t: Throwable? ->
 
-            })
+                    Log.e("Currency", t?.localizedMessage)
+                    error.value = t?.localizedMessage
+
+                })
+        )
 
         return currencyRatesLiveData
-
     }
 
     private fun getCurrencyListFromMap(rates: Map<String, Double>): MutableList<CurrencyRate> {
@@ -54,12 +62,13 @@ class CurrencyListViewModel @Inject constructor(
                 it.currencyCode == currencyCode
             }.first()
 
+
             ratesList.add(
                 CurrencyRate(
                     currencyCode,
-                    currencyRate,
-                    currencyInfo?.currencyName,
-                    currencyInfo?.currencyFlagUrl
+                    currencyRate * baseCurrencyRateFactor,
+                    currencyInfo.currencyName,
+                    currencyInfo.currencyFlagUrl
                 )
             )
         }

@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/list_item_padding">
+    android:padding="@dimen/list_item_padding"
+    >
 
     <ImageView
         android:id="@+id/imgCurrencyFLag"
@@ -46,9 +47,9 @@
         android:imeOptions="actionDone"
         android:importantForAutofill="no"
         android:inputType="numberDecimal"
-        android:maxLength="15"
         android:maxLines="1"
         android:textSize="@dimen/xxlarg_text_size"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"

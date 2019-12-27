@@ -4,8 +4,10 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.sattar.currencyconverter.R
 import com.sattar.currencyconverter.data.model.CurrencyRate
+import com.sattar.currencyconverter.util.format
 import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
+import kotlinx.android.synthetic.main.list_item_currency_rate.*
 import kotlinx.android.synthetic.main.list_item_currency_rate.view.*
 
 /**
@@ -21,8 +23,9 @@ class CurrencyRateViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         this.currencyRate = currencyRate
         view.txtCurrencyCode.text = currencyRate.currencyCode
         view.txtCurrencyName.text = currencyRate.currencyName
-        view.etCurrencyRate.setText(currencyRate.currencyRate.toString())
-
+        view.etCurrencyRate.setText(currencyRate.currencyRate.format())
+        view.etCurrencyRate.isFocusable = false
+        view.etCurrencyRate.isClickable = false
         Picasso.get()
             .load(currencyRate.currencyFlagUrl)
             .resize(48, 48)
