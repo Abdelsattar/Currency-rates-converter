@@ -53,8 +53,8 @@ class CurrencyListActivity : BaseActivity() {
     private fun getLatestCurrencies() {
 
         currencyListViewModel.getLatestCurrencyRates().observe(this,
-            Observer { serverResponse ->
-                serverResponse.response?.let {
+            Observer { currenciesResponse ->
+                currenciesResponse?.let {
                     currencyRateAdapter.addCurrencies(it)
                 }
             })
@@ -65,6 +65,8 @@ class CurrencyListActivity : BaseActivity() {
         currencyRateAdapter.setOnCurrencyRowClick { currencyModel ->
             bindCurrencyRate(currencyModel)
             currencyListViewModel.baseCurrencyCode = currencyModel.currencyCode
+            currencyListViewModel.baseCurrencyRateFactor = currencyModel.currencyRate
+
             getLatestCurrencies()
         }
         rvCurrencyRates.adapter = currencyRateAdapter
@@ -78,7 +80,7 @@ class CurrencyListActivity : BaseActivity() {
 
         etCurrencyRate.doOnTextChanged { text, start, count, after ->
             if (text.toString().isNotEmpty()) {
-                var inputRate = text.toString().toDoubleOrNull()
+                val inputRate = text.toString().toDoubleOrNull()
                 inputRate?.let {
                     currencyListViewModel.baseCurrencyRateFactor = it
                     getLatestCurrencies()
