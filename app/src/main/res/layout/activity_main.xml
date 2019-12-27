@@ -6,9 +6,32 @@
     android:layout_height="match_parent"
     tools:context=".ui.currencylist.CurrencyListActivity">
 
-    <androidx.recyclerview.widget.RecyclerView
+
+    <TextView
+        android:id="@+id/txtRates"
         android:layout_width="match_parent"
-        android:id="@+id/rvCurrencyRates"
-        android:layout_height="match_parent"/>
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/medium_margin"
+        android:layout_marginBottom="@dimen/medium_margin"
+        android:layout_marginStart="@dimen/rates_start_margin"
+        android:text="@string/txt_rates"
+        android:textSize="@dimen/xxlarg_text_size"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textColor="@color/color_black"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshCurrencyList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/txtRates">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvCurrencyRates"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

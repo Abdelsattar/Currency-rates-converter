@@ -1,7 +1,6 @@
 package com.sattar.currencyconverter.ui.currencylist
 
 import android.os.Bundle
-import android.provider.Telephony
 import android.util.Log
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -21,8 +20,6 @@ class CurrencyListActivity : BaseActivity() {
     lateinit var currencyListViewModel: CurrencyListViewModel
 
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -32,6 +29,11 @@ class CurrencyListActivity : BaseActivity() {
 
     fun initScreen() {
         getLatestCurrencies()
+
+        swipeRefreshCurrencyList.setOnRefreshListener {
+            getLatestCurrencies()
+            swipeRefreshCurrencyList.isRefreshing = false
+        }
     }
 
     fun getLatestCurrencies() {
@@ -39,10 +41,8 @@ class CurrencyListActivity : BaseActivity() {
         currencyListViewModel.getLatestCurrencyRates("EUR").observe(this,
             Observer { serverResponse ->
                 if (serverResponse.status == 200) {
-                    Log.e("UI response ", serverResponse?.response.toString())
                     setupCurrencyRatesRecyclerView(serverResponse?.response)
                 } else {
-                    Log.e("UI response ", serverResponse?.error)
 
                 }
             })
