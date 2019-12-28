@@ -44,12 +44,9 @@ class CurrencyRatesAdapter() :
         viewHolder.itemView.setOnClickListener {
             rowClick.invoke(currencyRate)
             currencyRates.apply {
-//                clear()
-//                addAll(originalRates)
                 removeAt(position)
             }
             this.notifyDataSetChanged()
-
         }
     }
 

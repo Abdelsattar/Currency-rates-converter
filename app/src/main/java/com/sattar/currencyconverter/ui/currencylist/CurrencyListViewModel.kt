@@ -1,13 +1,12 @@
 package com.sattar.currencyconverter.ui.currencylist
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.sattar.currencyconverter.data.model.CurrencyRate
+import com.sattar.currencyconverter.di.BaseSchedulerProvider
 import com.sattar.currencyconverter.ui.base.BaseViewModel
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import javax.inject.Named
 
 /**
  * Project: Currency Converter
@@ -16,7 +15,8 @@ import javax.inject.Inject
  */
 class CurrencyListViewModel @Inject constructor(
     private val currencyListRepository: CurrencyListRepository,
-    private val localCurrencies: ArrayList<CurrencyRate>
+    private val localCurrencies: ArrayList<CurrencyRate>,
+    private val schedulerProvider: BaseSchedulerProvider
 ) : BaseViewModel() {
 
     var baseCurrencyCode = "EUR"
@@ -28,8 +28,8 @@ class CurrencyListViewModel @Inject constructor(
         disposable.clear()
         disposable.add(
             currencyListRepository.getLatestCurrencyRates(baseCurrencyCode)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(schedulerProvider.io())
+                .observeOn(schedulerProvider.ui())
                 .repeatWhen { completed -> completed.delay(1, TimeUnit.SECONDS) }
                 .subscribe({ response ->
                     currencyRatesLiveData.value =
@@ -45,7 +45,6 @@ class CurrencyListViewModel @Inject constructor(
     }
 
     private fun getCurrencyListFromMap(rates: Map<String, Double>): MutableList<CurrencyRate> {
-        Log.e("Local Currency", localCurrencies.size.toString())
 
         val ratesList = ArrayList<CurrencyRate>(rates.size)
 

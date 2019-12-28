@@ -56,6 +56,9 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    testImplementation "android.arch.core:core-testing:1.1.1"
+    testImplementation 'org.mockito:mockito-core:3.2.0'
+    testImplementation 'org.mockito:mockito-inline:3.2.0'
 
 
     //dagger2
@@ -75,7 +78,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.7.0'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
 
-    //image loading
+    //image loading picasso
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'jp.wasabeef:picasso-transformations:2.2.1'
 
