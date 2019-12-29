@@ -7,7 +7,6 @@
 
 
     //margin
-    <dimen name="small_margin">8dp</dimen>
     <dimen name="medium_margin">16dp</dimen>
 
     <dimen name="rates_start_margin">72dp</dimen>

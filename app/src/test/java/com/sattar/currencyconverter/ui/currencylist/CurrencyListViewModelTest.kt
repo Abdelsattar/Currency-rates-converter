@@ -1,9 +1,7 @@
 package com.sattar.currencyconverter.ui.currencylist
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.google.gson.Gson
 import com.sattar.currencyconverter.data.model.CurrencyRate
-import com.sattar.currencyconverter.data.model.CurrencyRatesResponse
 import com.sattar.currencyconverter.di.TestSchedulerProvider
 import io.reactivex.Single
 import io.reactivex.schedulers.TestScheduler
@@ -37,13 +35,7 @@ class CurrencyListViewModelTest {
 
     private lateinit var currencyListViewModel: CurrencyListViewModel
 
-    private val euroCurrencyResponse =
-        "{\"base\":\"EUR\",\"date\":\"2018-09-06\",\"rates\":{\"AUD\": 1.1,\"BGN\":1.2," +
-                "\"BRL\":1.3,\"CAD\":1.4}}"
-
     var BASE_EURO = "EUR"
-
-    lateinit var EURO_CURRENCY_RATE_RESPONSE: CurrencyRatesResponse
 
     private var localCurrenciesInfo = ArrayList<CurrencyRate>()
 
@@ -56,15 +48,6 @@ class CurrencyListViewModelTest {
         currencyListViewModel =
             CurrencyListViewModel(currencyListRepository, localCurrenciesInfo, schedulerProvider)
 
-        EURO_CURRENCY_RATE_RESPONSE =
-            Gson().fromJson(euroCurrencyResponse, CurrencyRatesResponse::class.java)
-
-        `when`(currencyListRepository.getLatestCurrencyRates(ArgumentMatchers.anyString()))
-            .thenAnswer {
-                Single.just(EURO_CURRENCY_RATE_RESPONSE)
-            }
-
-
     }
 
     //region test cases for getLatestCurrencyRates
@@ -73,6 +56,15 @@ class CurrencyListViewModelTest {
     fun `should return the currencies compiend with name and flag url`() {
         //Given.
         val expectedResponse = initEUROExpectedResponse()
+
+        `when`(
+            currencyListRepository.getLatestCurrencyRates(
+                ArgumentMatchers.anyString(),
+                eq(1.0)
+            )
+        ).thenAnswer {
+            Single.just(initEUROExpectedResponse())
+        }
 
         //When
         val actualResponse = currencyListViewModel.getLatestCurrencyRates()
@@ -84,6 +76,22 @@ class CurrencyListViewModelTest {
         Assert.assertEquals(BASE_EURO, currencyListViewModel.baseCurrencyCode)
     }
 
+    @Test(expected = java.lang.Exception::class)
+    fun `should return the currencies compiend with name and flag error `() {
+
+        `when`(
+            currencyListRepository.getLatestCurrencyRates(
+                eq("500"),
+                eq(1.0)
+            )
+        ).thenThrow(Exception())
+
+        currencyListViewModel.baseCurrencyCode = "500"
+        currencyListViewModel.baseCurrencyRateFactor = 1.0
+
+        currencyListViewModel.getLatestCurrencyRates()
+    }
+
     @Test
     fun `should return the currencies with rate multiplied By factor after change the factor For EURO`() {
         //Given.
@@ -91,6 +99,16 @@ class CurrencyListViewModelTest {
         currencyListViewModel.baseCurrencyRateFactor = rateFactor
         val expectedResponse = initEUROExpectedResponse(rateFactor)
 
+
+        val newRateFactor = 2.0
+        `when`(
+            currencyListRepository.getLatestCurrencyRates(
+                ArgumentMatchers.anyString(),
+                eq(newRateFactor)
+            )
+        ).thenAnswer {
+            Single.just(initEUROExpectedResponse(newRateFactor))
+        }
         //When
         val actualResponse = currencyListViewModel.getLatestCurrencyRates()
 
@@ -108,10 +126,10 @@ class CurrencyListViewModelTest {
         verify(
             currencyListRepository,
             atLeastOnce()
-        ).getLatestCurrencyRates(ArgumentMatchers.anyString())
+        ).getLatestCurrencyRates(ArgumentMatchers.anyString(), ArgumentMatchers.anyDouble())
     }
 
-    fun initEUROExpectedResponse(rateFactor: Double = 1.0): ArrayList<CurrencyRate> {
+    private fun initEUROExpectedResponse(rateFactor: Double = 1.0): ArrayList<CurrencyRate> {
         val AUD_RATE = 1.1
         val BGN_RATE = 1.2
         val BRL_RATE = 1.3
@@ -145,6 +163,7 @@ class CurrencyListViewModelTest {
 
         return expectedResponse
     }
+
 
     //endregion
 }

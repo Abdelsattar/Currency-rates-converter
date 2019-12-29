@@ -11,12 +11,18 @@ import javax.inject.Inject
  * Created: 12/24/2019.
  * @author : Mohamed Abd EL-Sattar
  */
-class CurrencyListRepository @Inject constructor(private val currencyApiService: CurrencyApiService,
-                                                 private val localCurrenciesData: ArrayList<CurrencyRate>) : BaseRepository() {
+class CurrencyListRepository @Inject constructor(
+    private val currencyApiService: CurrencyApiService,
+    private val localCurrenciesData: ArrayList<CurrencyRate>
+) : BaseRepository() {
 
-    fun getLatestCurrencyRates(baseCurrency: String,baseRateFactor: Double) =
+    fun getLatestCurrencyRates(baseCurrency: String, baseRateFactor: Double) =
         currencyApiService.getLatestCurrencyRates(baseCurrency).map { currencyRatesResponse ->
-            Mapper.getCurrencyListFromMap(currencyRatesResponse.rates,baseRateFactor,localCurrenciesData )
+            Mapper.getCurrencyListFromMap(
+                currencyRatesResponse.rates,
+                baseRateFactor,
+                localCurrenciesData
+            )
         }
 
 }
