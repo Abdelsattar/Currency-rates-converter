@@ -5,6 +5,12 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.schedulers.TestScheduler
 
+/**
+ * Project: Currency Converter
+ * Created: 12/28/2019.
+ * @author : Mohamed Abd EL-Sattar
+ */
+
 interface BaseSchedulerProvider {
     fun io(): Scheduler
     fun computation(): Scheduler

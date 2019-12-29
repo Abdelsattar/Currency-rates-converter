@@ -2,7 +2,6 @@ package com.sattar.currencyconverter.di
 
 import dagger.Module
 import dagger.Provides
-import javax.inject.Named
 
 /**
  * Project: Currency Converter
@@ -14,6 +13,6 @@ import javax.inject.Named
 class SchedulerModule {
 
     @Provides
-    fun provideScheduler(): BaseSchedulerProvider  = SchedulerProvider()
+    fun provideScheduler(): BaseSchedulerProvider = SchedulerProvider()
 
 }

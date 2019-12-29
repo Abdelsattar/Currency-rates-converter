@@ -1,12 +1,10 @@
 package com.sattar.currencyconverter.util
 
 import android.content.Context
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.annotation.LayoutRes
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
 import java.io.InputStream
 import java.text.DecimalFormat
 
@@ -31,5 +29,12 @@ inline fun <reified T> Gson.fromAssets(context: Context, fileName: String): T {
 fun Double.format(): String {
     val dec = DecimalFormat("#.#####")
     return dec.format(this)
+}
+
+fun CompositeDisposable.clearAndAdd(disposable: Disposable) {
+    this.apply {
+        clear()
+        add(disposable)
+    }
 }
 

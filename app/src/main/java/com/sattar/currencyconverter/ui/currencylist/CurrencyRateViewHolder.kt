@@ -7,7 +7,6 @@ import com.sattar.currencyconverter.data.model.CurrencyRate
 import com.sattar.currencyconverter.util.format
 import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
-import kotlinx.android.synthetic.main.list_item_currency_rate.*
 import kotlinx.android.synthetic.main.list_item_currency_rate.view.*
 
 /**

@@ -2,11 +2,11 @@ package com.sattar.currencyconverter.ui.currencylist
 
 import android.os.Bundle
 import androidx.core.view.isVisible
+import androidx.core.widget.NestedScrollView
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.sattar.currencyconverter.R
 import com.sattar.currencyconverter.data.model.CurrencyRate
 import com.sattar.currencyconverter.ui.base.BaseActivity
 import com.sattar.currencyconverter.ui.base.BaseViewModel
@@ -17,6 +17,7 @@ import jp.wasabeef.picasso.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.list_item_currency_rate.*
 import javax.inject.Inject
+
 
 class CurrencyListActivity : BaseActivity() {
 
@@ -33,7 +34,7 @@ class CurrencyListActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(com.sattar.currencyconverter.R.layout.activity_main)
 
         initScreen()
     }
@@ -88,6 +89,7 @@ class CurrencyListActivity : BaseActivity() {
     private fun setupCurrencyRatesRecyclerView() {
         currencyRateAdapter.setOnCurrencyRowClick { currencyModel ->
             bindCurrencyRate(currencyModel)
+            scrollToTop()
             currencyListViewModel.baseCurrencyCode = currencyModel.currencyCode
             currencyListViewModel.baseCurrencyRateFactor = currencyModel.currencyRate
 
@@ -95,6 +97,13 @@ class CurrencyListActivity : BaseActivity() {
         }
         rvCurrencyRates.adapter = currencyRateAdapter
         rvCurrencyRates.layoutManager = LinearLayoutManager(this)
+    }
+
+    private fun scrollToTop() {
+        nestedScrollView.post {
+            nestedScrollView.fling(0);  // Sets mLastScrollerY for next command
+            nestedScrollView.fullScroll(NestedScrollView.FOCUS_UP)
+        }
     }
 
     private fun bindCurrencyRate(currencyRate: CurrencyRate) {
@@ -117,17 +126,16 @@ class CurrencyListActivity : BaseActivity() {
             .load(currencyRate.currencyFlagUrl)
             .resize(48, 48)
             .transform(CropCircleTransformation())
-            .placeholder(R.drawable.ic_placeholder_flag)
-            .error(R.drawable.ic_placeholder_error)
+            .placeholder(com.sattar.currencyconverter.R.drawable.ic_placeholder_flag)
+            .error(com.sattar.currencyconverter.R.drawable.ic_placeholder_error)
             .into(imgCurrencyFLag);
     }
 
-
-    fun hideLoading() {
+    private fun hideLoading() {
         pbCurrencyList.handleVisibleOrGone(false)
     }
 
-    fun showLoading() {
+    private fun showLoading() {
         pbCurrencyList.handleVisibleOrGone(true)
     }
 

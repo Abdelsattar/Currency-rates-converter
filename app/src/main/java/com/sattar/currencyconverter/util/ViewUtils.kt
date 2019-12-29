@@ -11,7 +11,6 @@ import androidx.annotation.LayoutRes
  * @author : Mohamed Abd EL-Sattar
  */
 
-
 fun ViewGroup.inflate(@LayoutRes layoutRes: Int, attachToRoot: Boolean = false): View {
     return LayoutInflater.from(context).inflate(layoutRes, this, attachToRoot)
 }

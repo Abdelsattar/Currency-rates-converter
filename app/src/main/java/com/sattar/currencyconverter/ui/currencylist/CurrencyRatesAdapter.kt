@@ -9,7 +9,6 @@ import com.sattar.currencyconverter.util.inflate
 class CurrencyRatesAdapter() :
     RecyclerView.Adapter<CurrencyRateViewHolder>() {
 
-
     private var currencyRates: MutableList<CurrencyRate> = ArrayList()
     private var originalRates: MutableList<CurrencyRate> = ArrayList()
 

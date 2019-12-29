@@ -4,9 +4,9 @@ import androidx.lifecycle.MutableLiveData
 import com.sattar.currencyconverter.data.model.CurrencyRate
 import com.sattar.currencyconverter.di.BaseSchedulerProvider
 import com.sattar.currencyconverter.ui.base.BaseViewModel
+import com.sattar.currencyconverter.util.clearAndAdd
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
-import javax.inject.Named
 
 /**
  * Project: Currency Converter
@@ -22,50 +22,19 @@ class CurrencyListViewModel @Inject constructor(
     var baseCurrencyCode = "EUR"
     var baseCurrencyRateFactor = 1.0
 
-    fun getLatestCurrencyRates(): MutableLiveData<MutableList<CurrencyRate>> {
-        val currencyRatesLiveData = MutableLiveData<MutableList<CurrencyRate>>()
-
-        disposable.clear()
-        disposable.add(
-            currencyListRepository.getLatestCurrencyRates(baseCurrencyCode)
+    fun getLatestCurrencyRates() = MutableLiveData<MutableList<CurrencyRate>>().apply {
+        disposable.clearAndAdd(
+            currencyListRepository.getLatestCurrencyRates(baseCurrencyCode, baseCurrencyRateFactor)
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
                 .repeatWhen { completed -> completed.delay(1, TimeUnit.SECONDS) }
                 .subscribe({ response ->
-                    currencyRatesLiveData.value =
-                        getCurrencyListFromMap(response.rates)
-
+                    this.value = response
                 }, { t: Throwable? ->
                     error.value = t?.localizedMessage
 
                 })
         )
-
-        return currencyRatesLiveData
     }
-
-    private fun getCurrencyListFromMap(rates: Map<String, Double>): MutableList<CurrencyRate> {
-
-        val ratesList = ArrayList<CurrencyRate>(rates.size)
-
-        rates.forEach { (currencyCode, currencyRate) ->
-            val currencyInfo = localCurrencies.filter {
-                it.currencyCode == currencyCode
-            }.first()
-
-
-            ratesList.add(
-                CurrencyRate(
-                    currencyCode,
-                    currencyRate * baseCurrencyRateFactor,
-                    currencyInfo.currencyName,
-                    currencyInfo.currencyFlagUrl
-                )
-            )
-        }
-
-        return ratesList
-    }
-
 
 }
