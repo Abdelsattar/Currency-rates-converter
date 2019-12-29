@@ -1,6 +1,7 @@
 package com.sattar.currencyconverter.ui.currencylist
 
 import android.os.Bundle
+import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -10,6 +11,7 @@ import com.sattar.currencyconverter.data.model.CurrencyRate
 import com.sattar.currencyconverter.ui.base.BaseActivity
 import com.sattar.currencyconverter.ui.base.BaseViewModel
 import com.sattar.currencyconverter.util.format
+import com.sattar.currencyconverter.util.handleVisibleOrGone
 import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.activity_main.*
@@ -43,22 +45,44 @@ class CurrencyListActivity : BaseActivity() {
 
         swipeRefreshCurrencyList.setOnRefreshListener {
             getLatestCurrencies()
+            showLoading()
+
+            itemBase.handleVisibleOrGone(false)
+            txtError.handleVisibleOrGone(false)
+
+            currencyRateAdapter.clearData()
             swipeRefreshCurrencyList.isRefreshing = false
         }
 
         getLatestCurrencies()
 
+        currencyListViewModel.error.observe(this, Observer {
+            hideLoading()
+            if (currencyRateAdapter.isDataEmpty()) {
+                txtError.handleVisibleOrGone(true)
+                txtError.setText(it)
+            }
+
+        })
     }
 
     private fun getLatestCurrencies() {
 
         currencyListViewModel.getLatestCurrencyRates().observe(this,
             Observer { currenciesResponse ->
+                if (pbCurrencyList.isVisible)
+                    hideLoading()
+
+                if (!itemBase.isVisible)
+                    itemBase.handleVisibleOrGone(true)
+
+                if (txtError.isVisible)
+                    itemBase.handleVisibleOrGone(false)
+
                 currenciesResponse?.let {
                     currencyRateAdapter.addCurrencies(it)
                 }
             })
-
     }
 
     private fun setupCurrencyRatesRecyclerView() {
@@ -96,6 +120,15 @@ class CurrencyListActivity : BaseActivity() {
             .placeholder(R.drawable.ic_placeholder_flag)
             .error(R.drawable.ic_placeholder_error)
             .into(imgCurrencyFLag);
+    }
+
+
+    fun hideLoading() {
+        pbCurrencyList.handleVisibleOrGone(false)
+    }
+
+    fun showLoading() {
+        pbCurrencyList.handleVisibleOrGone(true)
     }
 
 }

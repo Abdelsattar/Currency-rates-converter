@@ -28,11 +28,8 @@ inline fun <reified T> Gson.fromAssets(context: Context, fileName: String): T {
 }
 
 
-fun ViewGroup.inflate(@LayoutRes layoutRes: Int, attachToRoot: Boolean = false): View {
-    return LayoutInflater.from(context).inflate(layoutRes, this, attachToRoot)
-}
-
 fun Double.format(): String {
     val dec = DecimalFormat("#.#####")
     return dec.format(this)
 }
+
