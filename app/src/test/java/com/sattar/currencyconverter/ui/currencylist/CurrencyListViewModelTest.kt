@@ -1,27 +1,21 @@
 package com.sattar.currencyconverter.ui.currencylist
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
-import com.sattar.currencyconverter.data.api.CurrencyApiService
 import com.sattar.currencyconverter.data.model.CurrencyRate
 import com.sattar.currencyconverter.data.model.CurrencyRatesResponse
 import com.sattar.currencyconverter.di.TestSchedulerProvider
-import com.sattar.currencyconverter.di.TrampolineSchedulerProvider
 import io.reactivex.Single
 import io.reactivex.schedulers.TestScheduler
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.InjectMocks
+import org.mockito.ArgumentMatchers
 import org.mockito.Mock
-import org.mockito.Mockito
-import org.mockito.Mockito.times
+import org.mockito.Mockito.*
 import org.mockito.MockitoAnnotations
-import org.mockito.stubbing.Answer
 import java.util.concurrent.TimeUnit
-import javax.inject.Inject
 
 /**
  * Project: Currency Converter
@@ -32,103 +26,125 @@ import javax.inject.Inject
 class CurrencyListViewModelTest {
 
 
-//    private lateinit var testScheduler: TestScheduler
-//    private lateinit var testSchedulerProvider: TestSchedulerProvider
-//
-    private var schedulerProvider = TrampolineSchedulerProvider()
+    private var testScheduler = TestScheduler()
+    private var schedulerProvider = TestSchedulerProvider(testScheduler)
 
     @get:Rule
     val rule = InstantTaskExecutorRule()
 
     @Mock
-    private lateinit var currencyApiService: CurrencyApiService
-
-    @InjectMocks
     lateinit var currencyListRepository: CurrencyListRepository
 
     private lateinit var currencyListViewModel: CurrencyListViewModel
 
-    private val currencyResponse =
-        "{\"base\":\"EUR\",\"date\":\"2018-09-06\",\"rates\":{\"AUD\":1.6203,\"BGN\":1.9605," +
-                "\"BRL\":4.8033,\"CAD\":1.5375,\"CHF\":1.1302,\"CNY\":7.9641,\"CZK\":25.777," +
-                "\"DKK\":7.4746,\"GBP\":0.90039,\"HKD\":9.1543,\"HRK\":7.4519,\"HUF\":327.27," +
-                "\"IDR\":17365.0,\"ILS\":4.1806,\"INR\":83.918,\"ISK\":128.11,\"JPY\":129.86," +
-                "\"KRW\":1307.9,\"MXN\":22.419,\"MYR\":4.8235,\"NOK\":9.7994,\"NZD\":1.7675," +
-                "\"PHP\":62.742,\"PLN\":4.3287,\"RON\":4.6496,\"RUB\":79.765,\"SEK\":10.616," +
-                "\"SGD\":1.6038,\"THB\":38.221,\"TRY\":7.6465,\"USD\":1.1662,\"ZAR\":17.866}}"
+    private val euroCurrencyResponse =
+        "{\"base\":\"EUR\",\"date\":\"2018-09-06\",\"rates\":{\"AUD\": 1.1,\"BGN\":1.2," +
+                "\"BRL\":1.3,\"CAD\":1.4}}"
 
-    lateinit var currencyRatesResponse: CurrencyRatesResponse
+    var BASE_EURO = "EUR"
 
-    private var localCurrencies = ArrayList<CurrencyRate>()
-    private val BASE_CURRENCY_CODE = "EUR"
+    lateinit var EURO_CURRENCY_RATE_RESPONSE: CurrencyRatesResponse
+
+    private var localCurrenciesInfo = ArrayList<CurrencyRate>()
 
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
 
-        localCurrencies.add(
+        localCurrenciesInfo = initEUROExpectedResponse(0.0)
+
+        currencyListViewModel =
+            CurrencyListViewModel(currencyListRepository, localCurrenciesInfo, schedulerProvider)
+
+        EURO_CURRENCY_RATE_RESPONSE =
+            Gson().fromJson(euroCurrencyResponse, CurrencyRatesResponse::class.java)
+
+        `when`(currencyListRepository.getLatestCurrencyRates(ArgumentMatchers.anyString()))
+            .thenAnswer {
+                Single.just(EURO_CURRENCY_RATE_RESPONSE)
+            }
+
+
+    }
+
+    //region test cases for getLatestCurrencyRates
+
+    @Test
+    fun `should return the currencies compiend with name and flag url`() {
+        //Given.
+        val expectedResponse = initEUROExpectedResponse()
+
+        //When
+        val actualResponse = currencyListViewModel.getLatestCurrencyRates()
+
+        testScheduler.advanceTimeBy(1, TimeUnit.SECONDS);
+
+        //Then
+        Assert.assertEquals(expectedResponse, actualResponse.value)
+        Assert.assertEquals(BASE_EURO, currencyListViewModel.baseCurrencyCode)
+    }
+
+    @Test
+    fun `should return the currencies with rate multiplied By factor after change the factor For EURO`() {
+        //Given.
+        val rateFactor = 2.0
+        currencyListViewModel.baseCurrencyRateFactor = rateFactor
+        val expectedResponse = initEUROExpectedResponse(rateFactor)
+
+        //When
+        val actualResponse = currencyListViewModel.getLatestCurrencyRates()
+
+        testScheduler.advanceTimeBy(1, TimeUnit.SECONDS);
+
+        //Then
+        Assert.assertEquals(expectedResponse, actualResponse.value)
+    }
+
+    @Test
+    fun `should call currency repository when call getLatestCurrencyRates `() {
+        currencyListViewModel.getLatestCurrencyRates()
+        testScheduler.advanceTimeBy(1, TimeUnit.SECONDS);
+
+        verify(
+            currencyListRepository,
+            atLeastOnce()
+        ).getLatestCurrencyRates(ArgumentMatchers.anyString())
+    }
+
+    fun initEUROExpectedResponse(rateFactor: Double = 1.0): ArrayList<CurrencyRate> {
+        val AUD_RATE = 1.1
+        val BGN_RATE = 1.2
+        val BRL_RATE = 1.3
+        val CAD_RATE = 1.4
+
+        val expectedResponse = ArrayList<CurrencyRate>()
+        expectedResponse.add(
             CurrencyRate(
-                "AUD", 1.25,
+                "AUD", AUD_RATE * rateFactor,
                 "Australian Dollar", "AUD.png"
             )
         )
-        localCurrencies.add(
+        expectedResponse.add(
             CurrencyRate(
-                "BGN", 1.25,
+                "BGN", BGN_RATE * rateFactor,
                 "Bulgarian Lev", "BGN.png"
             )
         )
-        localCurrencies.add(
+        expectedResponse.add(
             CurrencyRate(
-                "BRL", 1.25,
+                "BRL", BRL_RATE * rateFactor,
                 "Brazilian Real", "BRL.png"
             )
         )
-        localCurrencies.add(
+        expectedResponse.add(
             CurrencyRate(
-                "CAD", 1.25,
+                "CAD", CAD_RATE * rateFactor,
                 "Canadian Dollar", "CAD.png"
             )
         )
 
-//        testScheduler = TestScheduler()
-//        testSchedulerProvider = TestSchedulerProvider(testScheduler)
-
-//        currencyListRepository = CurrencyListRepository(currencyApiService)
-
-        currencyListViewModel =
-            CurrencyListViewModel(currencyListRepository, localCurrencies, schedulerProvider)
-
-        currencyRatesResponse = Gson().fromJson(currencyResponse, CurrencyRatesResponse::class.java)
-
-
+        return expectedResponse
     }
 
-    @Test
-    fun `should return the currencies`() {
-        //Given
-        val expectedResponse = MutableLiveData<MutableList<CurrencyRate>>()
-        expectedResponse.value = localCurrencies
-
-//        Mockito.`when`(currencyListRepository.getLatestCurrencyRates(BASE_CURRENCY_CODE))
-//            .thenAnswer(Answer {
-//                Single.just(currencyRatesResponse)
-////
-//            })
-        //When
-        val actualResponse = currencyListViewModel.getLatestCurrencyRates()
-//        testScheduler.advanceTimeBy(2, TimeUnit.SECONDS);
-
-        //Then
-        Assert.assertEquals(expectedResponse.value, actualResponse.value)
-    }
-
-
-    @Test
-    fun `should call currency repository `() {
-        currencyListViewModel.getLatestCurrencyRates()
-//        testScheduler.advanceTimeBy(2, TimeUnit.SECONDS);
-
-        Mockito.verify(currencyListRepository.getLatestCurrencyRates(BASE_CURRENCY_CODE), times(1))
-    }
+    //endregion
 }

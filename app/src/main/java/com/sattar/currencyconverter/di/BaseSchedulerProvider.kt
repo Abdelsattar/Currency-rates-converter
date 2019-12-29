@@ -17,12 +17,6 @@ class SchedulerProvider : BaseSchedulerProvider {
     override fun io() = Schedulers.io()
 }
 
-class TrampolineSchedulerProvider : BaseSchedulerProvider {
-    override fun computation() = Schedulers.trampoline()
-    override fun ui() = Schedulers.trampoline()
-    override fun io() = Schedulers.trampoline()
-}
-
 class TestSchedulerProvider(private val scheduler: TestScheduler) : BaseSchedulerProvider {
     override fun computation() = scheduler
     override fun ui() = scheduler
