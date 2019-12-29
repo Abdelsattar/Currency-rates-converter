@@ -13,4 +13,6 @@ class CurrencyListRepository @Inject constructor(val currencyApiService: Currenc
 
     fun getLatestCurrencyRates(baseCurrency: String) =
         currencyApiService.getLatestCurrencyRates(baseCurrency)
+
+
 }

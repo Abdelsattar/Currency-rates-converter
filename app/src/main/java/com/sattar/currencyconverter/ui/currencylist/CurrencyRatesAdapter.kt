@@ -10,8 +10,8 @@ class CurrencyRatesAdapter() :
     RecyclerView.Adapter<CurrencyRateViewHolder>() {
 
 
-    var currencyRates: MutableList<CurrencyRate> = ArrayList()
-    var originalRates: MutableList<CurrencyRate> = ArrayList()
+    private var currencyRates: MutableList<CurrencyRate> = ArrayList()
+    private var originalRates: MutableList<CurrencyRate> = ArrayList()
 
     private lateinit var rowClick: (item: CurrencyRate) -> Unit
 
@@ -44,12 +44,9 @@ class CurrencyRatesAdapter() :
         viewHolder.itemView.setOnClickListener {
             rowClick.invoke(currencyRate)
             currencyRates.apply {
-//                clear()
-//                addAll(originalRates)
                 removeAt(position)
             }
             this.notifyDataSetChanged()
-
         }
     }
 
@@ -57,5 +54,11 @@ class CurrencyRatesAdapter() :
         this.rowClick = rowClick
     }
 
+    fun clearData() {
+        currencyRates.clear()
+        notifyDataSetChanged()
+    }
+
+    fun isDataEmpty(): Boolean = currencyRates.isEmpty()
 
 }

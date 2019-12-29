@@ -13,14 +13,6 @@ import androidx.lifecycle.Observer
 abstract class BaseActivity : AppCompatActivity() {
 
 
-    fun showLoading() {
-        //todo implement when needed in the activity
-    }
-
-    fun hideLoading() {
-        //todo implement when needed in the activity
-    }
-
     fun showError(errorMessage: String) {
         Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
     }
